@@ -22,6 +22,8 @@ public class DemoApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(DemoApplication.class, args);
 	}
+
+
 //	@Value("${timeTable.demoData:SMALL}")
 //	private DemoData demoData;
 //

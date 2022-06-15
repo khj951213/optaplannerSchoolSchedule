@@ -8,7 +8,7 @@ import java.time.DayOfWeek;
 import java.time.LocalTime;
 
 @Entity
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"dayofWeek", "starttime", "endTime"}))
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"dayofWeek", "startTime", "endTime"}))
 public class Timeslot {
     @PlanningId
     @Id

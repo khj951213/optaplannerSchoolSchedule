@@ -1,10 +1,14 @@
 package com.example.demo.solver;
 
 import com.example.demo.domain.Lesson;
+import com.example.demo.domain.Room;
 import com.example.demo.domain.TimeTable;
+import com.example.demo.domain.Timeslot;
 import com.example.demo.persistence.LessonRepository;
+import com.example.demo.persistence.RoomRepository;
 import com.example.demo.persistence.TimeTableRepository;
 
+import com.example.demo.persistence.TimeslotRepository;
 import org.optaplanner.core.api.score.ScoreManager;
 import org.optaplanner.core.api.score.buildin.hardsoft.HardSoftScore;
 import org.optaplanner.core.api.solver.SolverManager;
@@ -12,14 +16,19 @@ import org.optaplanner.core.api.solver.SolverStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping()
 public class TimeTableController {
     @Autowired
     private TimeTableRepository timeTableRepository;
-
+    @Autowired
+    private RoomRepository roomRepository;
     @Autowired
     private LessonRepository lessonRepository;
+    @Autowired
+    private TimeslotRepository timeslotRepository;
     @Autowired
     private SolverManager<TimeTable, Long> solverManager;
     @Autowired
@@ -34,6 +43,7 @@ public class TimeTableController {
         solution.setSolverStatus(solverStatus);
         return solution;
     }
+
 
     public SolverStatus getSolverStatus() {
         return solverManager.getSolverStatus(TimeTableRepository.SINGLETON_TIME_TABLE_ID);
@@ -50,6 +60,32 @@ public class TimeTableController {
     @PostMapping("/lessons")
     public void lessons(@RequestBody Lesson lesson) {
         lessonRepository.save(lesson);
+    }
+
+    @DeleteMapping("/lessons/{id}" )
+    public void lessons(@PathVariable Long id) {
+        lessonRepository.deleteById(id);
+    }
+
+    @PostMapping("/rooms")
+    public void rooms(@RequestBody Room room) { roomRepository.save(room); }
+
+    @DeleteMapping("/rooms/{id}")
+    public void rooms(@PathVariable Long id) { roomRepository.deleteById(id);}
+
+    @GetMapping("/timeslots")
+    public List<Timeslot> timeslots() {
+        return timeslotRepository.findAll();
+    }
+
+    @PostMapping("/timeslots")
+    public void timeslot(@RequestBody Timeslot timeslot) {
+        timeslotRepository.save(timeslot);
+    }
+
+    @DeleteMapping("/timeslots/{id}")
+    public void timeslot(@PathVariable Long id) {
+        timeslotRepository.deleteById(id);
     }
 
     @PostMapping("/timeTable/stopSolving")
